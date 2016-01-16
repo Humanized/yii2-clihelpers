@@ -2,6 +2,8 @@
 
 namespace humanized\clihelpers\controllers;
 
+use yii\helpers\Console;
+
 /**
  * 
  */
@@ -14,7 +16,7 @@ class Controller extends \yii\console\Controller {
 
     public static function msgSuccess()
     {
-        echo 'OK';
+        $this->stdout("Success", Console::FG_GREEN, Console::BOLD);
     }
 
 }
