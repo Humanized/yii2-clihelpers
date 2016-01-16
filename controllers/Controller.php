@@ -33,20 +33,42 @@ class Controller extends \yii\console\Controller {
      *  
      * @var int - 0 for Success, Else 
      */
-    protected $_error = NULL;
+    protected $_msg = NULL;
 
+    /**
+     * Prints output message as error
+     */
     public function msgError()
     {
         $this->stdout("FAILED", Console::FG_RED, Console::BOLD);
         $this->stderr("\nGenerated Message: ");
-        $this->stderr($this->_error, Console::BG_BLUE);
+        $this->stderr($this->_msg, Console::BG_BLUE);
     }
 
     public function msgSuccess()
     {
-        $this->stdout("SUCCESS", Console::FG_GREEN, Console::BOLD);
+       
     }
 
+    private function msgStatus($fn=null)
+    {
+        $out = 'stdout';
+        $status = 'SUCCESS';
+        if ($this->_exitCode !== 0) {
+            $out = 'stderr';
+            $status = 'ERROR';
+        }
+        $this->$out('[');
+        $this->$out($status, (($this->_exitCode !== 0 ? Console::FG_GREEN : Console::FG_RED)), Console::BOLD);
+        $this->$out("]\t");
+      
+    }
+
+    /**
+     * Hides input
+     * Linux Only
+     * @todo Provide viable alternative for windows
+     */
     protected function hideInput()
     {
         if (!Console::isRunningOnWindows()) {
@@ -54,6 +76,11 @@ class Controller extends \yii\console\Controller {
         }
     }
 
+    /**
+     * Shows Input
+     * Linux Only
+     * @todo Provide viable alternative for windows
+     */
     protected function showInput()
     {
         if (!Console::isRunningOnWindows()) {
