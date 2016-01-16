@@ -46,5 +46,19 @@ class Controller extends \yii\console\Controller {
     {
         $this->stdout("SUCCESS", Console::FG_GREEN, Console::BOLD);
     }
-   
+
+    protected function hideInput()
+    {
+        if (!Console::isRunningOnWindows()) {
+            system('stty -echo');
+        }
+    }
+
+    protected function showInput()
+    {
+        if (!Console::isRunningOnWindows()) {
+            system('stty echo');
+        }
+    }
+
 }
