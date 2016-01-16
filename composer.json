@@ -10,7 +10,7 @@
         "forum": "http://www.yiiframework.com/forum/",
         "wiki": "https://github.com/Humanized/yii2-clihelpers/wiki",
         "irc": "irc://irc.freenode.net/yii",
-        "source": "https://github.com/humanized/yii2"
+        "source": "https://github.com/humanized/yii2-clihelpers"
     },
     "authors": [
         {
