@@ -35,33 +35,18 @@ class Controller extends \yii\console\Controller {
      */
     protected $_msg = NULL;
 
-    /**
-     * Prints output message as error
-     */
-    public function msgError()
-    {
-        $this->stdout("FAILED", Console::FG_RED, Console::BOLD);
-        $this->stderr("\nGenerated Message: ");
-        $this->stderr($this->_msg, Console::BG_BLUE);
-    }
-
-    public function msgSuccess()
-    {
-       
-    }
-
-    protected function msgStatus($fn=null)
+    protected function exitMsg($fn = null)
     {
         $out = 'stdout';
         $status = 'SUCCESS';
         if ($this->_exitCode !== 0) {
             $out = 'stderr';
-            $status = 'ERROR';
+            $status = 'ERROR #' . $this->_exitCode;
         }
         $this->$out('[');
         $this->$out($status, (($this->_exitCode !== 0 ? Console::FG_GREEN : Console::FG_RED)), Console::BOLD);
         $this->$out("]\t");
-      
+        $this->$out($this->_msg, Console::BG_BLUE);
     }
 
     /**
