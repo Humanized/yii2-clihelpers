@@ -47,6 +47,7 @@ class Controller extends \yii\console\Controller {
         $this->$out($status, (($this->_exitCode !== 0 ? Console::FG_GREEN : Console::FG_RED)), Console::BOLD);
         $this->$out("]\t");
         $this->$out($this->_msg, Console::BG_BLUE);
+        $this->stdout("\n");
     }
 
     /**
