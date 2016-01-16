@@ -1,0 +1,34 @@
+{
+    "name": "humanized/yii2-clihelpers",
+    "type": "yii2-extension",
+    "description": "Collection of Yii2 CLI Helper Functions - User predominantly in yii2-user and yii2-rbac",
+    "keywords": ["yii2", "cli", "helper"],
+    "license": "GPL-3.0",
+    "version":"0.1.0",
+    "support": {
+        "issues": "https://github.com/Humanized/yii2-clihelpers/issues",
+        "forum": "http://www.yiiframework.com/forum/",
+        "wiki": "https://github.com/Humanized/yii2-clihelpers/wiki",
+        "irc": "irc://irc.freenode.net/yii",
+        "source": "https://github.com/humanized/yii2"
+    },
+    "authors": [
+        {
+            "name": "Jeffrey Geyssens",
+            "email": "jeffrey@humanized.be"
+        },
+        {
+            "name": "François-Xavier de Saint Pern",
+            "email": "fx@humanized.be"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "@dev"
+
+    },
+    "autoload": {
+        "psr-4": {
+            "humanized\\clihelpers\\": ""
+        }
+    }
+}
