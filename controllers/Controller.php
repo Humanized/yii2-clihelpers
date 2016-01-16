@@ -50,7 +50,7 @@ class Controller extends \yii\console\Controller {
        
     }
 
-    private function msgStatus($fn=null)
+    protected function msgStatus($fn=null)
     {
         $out = 'stdout';
         $status = 'SUCCESS';
