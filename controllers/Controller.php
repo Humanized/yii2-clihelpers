@@ -28,12 +28,18 @@ class Controller extends \yii\console\Controller {
     protected $_exitCode = 0;
 
     /**
-     * Common Console Application error msg.
-     * Should be modified whenever the command provokes an erroneous exit code
+     * Common Console Application exit msg.
+     * Should be modified during application runtime
      *  
      * @var int - 0 for Success, Else 
      */
     protected $_msg = NULL;
+
+    /**
+     *
+     * @var type 
+     */
+    protected $_exludeAction = [];
 
     protected function exitMsg($fn = null)
     {
@@ -72,6 +78,17 @@ class Controller extends \yii\console\Controller {
         if (!Console::isRunningOnWindows()) {
             system('stty echo');
         }
+    }
+
+    public function afterAction($action, $result)
+    {
+        if (FALSE === array_search($action->id, $this->_exludeAction)) {
+            //Should remove in stable versions, but nice little fallback just in case
+            $this->showInput();
+            //Two newlines B4 program exit
+            $this->exitMsg();
+        }
+        return parent::afterAction($action, $result);
     }
 
     /**
