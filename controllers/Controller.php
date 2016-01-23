@@ -104,12 +104,13 @@ class Controller extends \yii\console\Controller {
      * 
      * @param array<mixed> $config
      */
-    protected function importCSV($config)
+    protected function importCSV($config, $fn = NULL)
     {
         $fileName = $config['fileName'];
         $file = fopen($fileName, "r");
         while (!feof($file)) {
             $record = fgetcsv($file, 0, $config['delimter']);
+            isset($fn) ? $fn($record) : NULL;
             if (isset($record[0])) {
                 $model = new $config['saveModel']($this->getRecordColumns($record, $config['attributeMap']));
                 $model->save();
