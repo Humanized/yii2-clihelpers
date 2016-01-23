@@ -109,15 +109,29 @@ class Controller extends \yii\console\Controller {
         $fileName = $config['fileName'];
         $file = fopen($fileName, "r");
         while (!feof($file)) {
-            $record = fgetcsv($file, 0, $config['delimter']);
-            isset($fn) ? $fn($record) : NULL;
+            $record = fgetcsv($file, 0, $config['delimiter']);
+
             if (isset($record[0])) {
-                $model = new $config['saveModel']($this->getRecordColumns($record, $config['attributeMap']));
+
+                //Parse attribute map
+                $attributes = $this->parseAttributeMap($config['attributeMap'],$record);
+                isset($fn) ? $fn($attributes,$config) : NULL;
+                $model = new $config['saveModel']();
+                $model->setAttributes($attributes);               
                 $model->save();
             } else {
                 break;
             }
         }
+    }
+
+    protected function parseAttributeMap($map,$record)
+    {
+        foreach ($map as $key => $value) {
+            $map[$value] = $record[$key];
+            unset($map[$key]);
+        }
+        return $map;
     }
 
     protected function getRecordColumns($line, $columnMap)
