@@ -108,7 +108,9 @@ class ImportController extends Controller {
         }
         try {
             \Yii::$app->db->createCommand()->createTable($this->table, $columns)->execute();
-        } catch (Exception $ex) {
+            \Yii::$app->db->createCommand()->addPrimaryKey($this->table, $columnNames[0])->execute();
+        } catch (\Exception $ex) {
+            $this->_msg = $ex->getLine();
             $this->_exitCode = 700;
         }
     }
@@ -124,10 +126,9 @@ class ImportController extends Controller {
         LINES TERMINATED BY '$this->terminator' IGNORE 1 LINES";
 //        echo "\n\n$sql\n\n";
 
-        if (\Yii::$app->db->createCommand($sql)->execute()) {
-            
-        } else {
-            
+        $pass = \Yii::$app->db->createCommand($sql)->execute();
+        if (!$pass) {
+            $this->_exitCode(780);
         }
     }
 
