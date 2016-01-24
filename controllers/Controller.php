@@ -12,12 +12,14 @@ use yii\helpers\Console;
  * 
  * 
  * @name CLI Extended Controller 
- * @version 0.0.1
+ * @version 0.1
  * @author Jeffrey Geyssens <jeffrey@humanized.be>
  * @package yii2-clihelpers
  * 
  */
 class Controller extends \yii\console\Controller {
+
+    protected $_status = 'SUCCESS';
 
     /**
      * Common Console Application exit code.
@@ -40,17 +42,17 @@ class Controller extends \yii\console\Controller {
      * @var type 
      */
     protected $_exludeAction = [];
+    public $preventDefault = FALSE;
 
     protected function exitMsg($fn = null)
     {
         $out = 'stdout';
-        $status = 'SUCCESS';
         if ($this->_exitCode !== 0) {
             $out = 'stderr';
-            $status = 'ERROR #' . $this->_exitCode;
+            $this->_status = 'ERROR #' . $this->_exitCode;
         }
         $this->$out('[');
-        $this->$out($status, (($this->_exitCode === 0 ? Console::FG_GREEN : Console::FG_RED)), Console::BOLD);
+        $this->$out($this->_status, (($this->_exitCode === 0 ? Console::FG_GREEN : Console::FG_RED)), Console::BOLD);
         $this->$out("]\t");
         $this->$out($this->_msg, Console::BG_BLUE);
         $this->stdout("\n");
@@ -86,7 +88,9 @@ class Controller extends \yii\console\Controller {
             //Should remove in stable versions, but nice little fallback just in case
             $this->showInput();
             //Two newlines B4 program exit
-            $this->exitMsg();
+            if (!$this->preventDefault) {
+                $this->exitMsg();
+            }
         }
         return parent::afterAction($action, $result);
     }
@@ -114,10 +118,10 @@ class Controller extends \yii\console\Controller {
             if (isset($record[0])) {
 
                 //Parse attribute map
-                $attributes = $this->parseAttributeMap($config['attributeMap'],$record);
-                isset($fn) ? $fn($attributes,$config) : NULL;
+                $attributes = $this->parseAttributeMap($config['attributeMap'], $record);
+                isset($fn) ? $fn($attributes, $config) : NULL;
                 $model = new $config['saveModel']();
-                $model->setAttributes($attributes);               
+                $model->setAttributes($attributes);
                 $model->save();
             } else {
                 break;
@@ -125,7 +129,7 @@ class Controller extends \yii\console\Controller {
         }
     }
 
-    protected function parseAttributeMap($map,$record)
+    protected function parseAttributeMap($map, $record)
     {
         foreach ($map as $key => $value) {
             $map[$value] = $record[$key];
@@ -134,9 +138,25 @@ class Controller extends \yii\console\Controller {
         return $map;
     }
 
-    protected function getRecordColumns($line, $columnMap)
+    protected function printValue($value, $fn = NULL)
     {
-        
+        $this->preventDefault = TRUE;
+        if (!isset($fn)) {
+            $fn = function($x) {
+                return $x;
+            };
+        }
+        $this->stdout($fn($value) . "\n", Console::FG_BLUE, Console::BOLD);
+    }
+
+    protected function printCollection($collection, $fn = NULL)
+    {
+        if ($fn == NULL) {
+            $fn = function($x) {
+                return $x;
+            };
+        }
+        $this->stdout(implode(",\n", array_map($fn, $collection)));
     }
 
 }
