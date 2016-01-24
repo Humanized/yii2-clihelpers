@@ -44,7 +44,7 @@ class Controller extends \yii\console\Controller {
     protected $_exludeAction = [];
     public $preventDefault = FALSE;
 
-    protected function exitMsg($fn = null)
+    protected function printStatus($fn = null)
     {
         $out = 'stdout';
         if ($this->_exitCode !== 0) {
@@ -56,6 +56,12 @@ class Controller extends \yii\console\Controller {
         $this->$out("]\t");
         $this->$out($this->_msg, Console::BG_BLUE);
         $this->stdout("\n");
+    }
+
+    protected function printWarning($fn = NULL)
+    {
+        $this->printStatus($fn);
+        $this->_exitCode=0;
     }
 
     /**
@@ -89,7 +95,7 @@ class Controller extends \yii\console\Controller {
             $this->showInput();
             //Two newlines B4 program exit
             if (!$this->preventDefault) {
-                $this->exitMsg();
+                $this->printStatus();
             }
         }
         return parent::afterAction($action, $result);
