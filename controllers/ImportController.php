@@ -19,7 +19,7 @@ class ImportController extends Controller {
     public $path = NULL;
     public $delimiter = ',';
     public $enclosure = '"';
-    public $terminator = "\\r\\n";
+    public $terminator = "\\n";
     public $start = 0;
     public $table = NULL;
     public $autobuild = TRUE;
@@ -29,7 +29,7 @@ class ImportController extends Controller {
     public function options($actionId)
     {
         return array_merge(
-                parent::options($actionId), ['path', 'table', 'delimiter', 'enclosure', 'start', 'autobuild']);
+                parent::options($actionId), ['path', 'table', 'delimiter', 'enclosure','terminator', 'start', 'autobuild']);
     }
 
     public function actionIndex()
@@ -128,7 +128,7 @@ class ImportController extends Controller {
 
         $pass = \Yii::$app->db->createCommand($sql)->execute();
         if (!$pass) {
-            $this->_exitCode(780);
+            $this->_exitCode=780;
         }
     }
 
