@@ -126,6 +126,7 @@ class Controller extends \yii\console\Controller {
                 //Parse attribute map
                 $attributes = $this->parseAttributeMap($config['attributeMap'], $record);
                 isset($fn) ? $fn($attributes, $config) : NULL;
+                var_dump($attributes);
                 $model = new $config['saveModel']();
                 $model->setAttributes($attributes);
                 $model->save();
