@@ -29,7 +29,7 @@ class ImportController extends Controller {
     public function options($actionId)
     {
         return array_merge(
-                parent::options($actionId), ['path', 'table', 'delimiter', 'enclosure','terminator', 'start', 'autobuild']);
+                parent::options($actionId), ['path', 'table', 'delimiter', 'enclosure', 'terminator', 'start', 'autobuild']);
     }
 
     public function actionIndex()
@@ -71,7 +71,7 @@ class ImportController extends Controller {
     {
         $this->_msg = 'Searching for DB table';
         if (!isset($this->table)) {
-            $this->tableName = 'import_' . time();
+            $this->table = 'import_' . time();
         }
         $sql = "SHOW TABLES LIKE '$this->table'";
         if (count(\Yii::$app->db->createCommand($sql)->queryColumn()) == 0) {
@@ -108,9 +108,9 @@ class ImportController extends Controller {
         }
         try {
             \Yii::$app->db->createCommand()->createTable($this->table, $columns)->execute();
-            \Yii::$app->db->createCommand()->addPrimaryKey($this->table, $columnNames[0])->execute();
+            \Yii::$app->db->createCommand()->addPrimaryKey('pk_' . $this->table, $this->table, $columnNames[0])->execute();
         } catch (\Exception $ex) {
-            $this->_msg = $ex->getLine();
+            $this->_msg = $ex->getMessage();
             $this->_exitCode = 700;
         }
     }
@@ -128,7 +128,8 @@ class ImportController extends Controller {
 
         $pass = \Yii::$app->db->createCommand($sql)->execute();
         if (!$pass) {
-            $this->_exitCode=780;
+            $this->_exitCode = 780;
+            $this->_msg = $pass->getMessage();
         }
     }
 
