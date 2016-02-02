@@ -93,7 +93,7 @@ class ImportController extends Controller {
             $this->_msg .= " - Skipped";
         }
         if ($this->_autobuild) {
-            $file = fopen($this->path, 'r');
+            $file = fopen($this->path, 'r', $this->delimiter);
             $columnNames = fgetcsv($file);
             fclose($file);
             $this->_constructTable($columnNames);
@@ -129,7 +129,7 @@ class ImportController extends Controller {
         $pass = \Yii::$app->db->createCommand($sql)->execute();
         if (!$pass) {
             $this->_exitCode = 780;
-            $this->_msg = $pass->getMessage();
+          
         }
     }
 
