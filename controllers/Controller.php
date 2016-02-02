@@ -61,7 +61,7 @@ class Controller extends \yii\console\Controller {
     protected function printWarning($fn = NULL)
     {
         $this->printStatus($fn);
-        $this->_exitCode=0;
+        $this->_exitCode = 0;
     }
 
     /**
@@ -143,27 +143,6 @@ class Controller extends \yii\console\Controller {
             unset($map[$key]);
         }
         return $map;
-    }
-
-    protected function printValue($value, $fn = NULL)
-    {
-        $this->preventDefault = TRUE;
-        if (!isset($fn)) {
-            $fn = function($x) {
-                return $x;
-            };
-        }
-        $this->stdout($fn($value) . "\n", Console::FG_BLUE, Console::BOLD);
-    }
-
-    protected function printCollection($collection, $fn = NULL)
-    {
-        if ($fn == NULL) {
-            $fn = function($x) {
-                return $x;
-            };
-        }
-        $this->stdout(implode(",\n", array_map($fn, $collection)));
     }
 
 }
