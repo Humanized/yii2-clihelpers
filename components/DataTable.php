@@ -17,7 +17,7 @@ class DataTable {
 
         echo 'Loading data from file: ' . "$class \n";
         $instance = new $class();
-        foreach ($instance->data as $record) {
+        foreach ($instance->records as $record) {
             $model = new $instance->modelClass($record);
             try {
                 $model->save();
