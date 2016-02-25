@@ -18,7 +18,6 @@ class DataTable {
         echo 'Loading data from file: ' . "$class \n";
         $instance = new $class();
         foreach ($instance->data as $record) {
-
             $model = new $instance->modelClass($record);
             try {
                 $model->save();
@@ -26,7 +25,7 @@ class DataTable {
                 echo $exc->getMessage();
             }
         }
-        echo 'Complete';
+        echo "Complete\n\n";
     }
 
 }
