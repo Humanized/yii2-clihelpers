@@ -9,7 +9,7 @@ class DataTable
 {
 
     public $modelClass;
-    public $data = [];
+    public $records = [];
 
     public function unloadCondtion($record)
     {
